@@ -28,10 +28,6 @@ def dashboard(request):
  else:
    return HttpResponseRedirect('/login/')
 
- 
-
-
-
 def signinview(request):
  if request.method=='POST':
   fm=UserSignInForm(request.POST)
@@ -42,31 +38,28 @@ def signinview(request):
  fm=UserSignInForm()
  return render (request,'blog/signin.html',{'fm':fm})
 
-
+#LOginVIEW
 def loginview(request):
- if not request.user.is_authenticated:
-   
-    if request.method=='POST':
-
-        fm=AuthenticationForm(request=request,data=request.POST)
-        if fm.is_valid():
-            un=fm.cleaned_data['username']
-            ps=fm.cleaned_data['password']
-            user=authenticate(username=un,password=ps)
-            if user is  None:
-                login(request,user)
-                messages.success(request,'login successfully')
-                return HttpResponseRedirect('/dashboard/')
-           
-          
-    else:   
-        fm=AuthenticationForm()
+    if not request.user.is_authenticated:
+        if request.method=='POST':
+            fm=AuthenticationForm(request=request,data=request.POST)
+            if fm.is_valid():
+                un=fm.cleaned_data['username']
+                ps=fm.cleaned_data['password']  
+                print(un,ps)
+                user=authenticate(username=un,password=ps)
+                if user is not None:
+                    login(request,user)
+                    messages.success(request,'login successfully')
+                    return HttpResponseRedirect('/dashboard/')
+        else:   
+            fm=AuthenticationForm()
         return render (request,'blog/login.html',{'fm':fm})
- else:
-    return HttpResponseRedirect('/dashboard/')
+    else:
+        HttpResponseRedirect('/dashboard/')
+
  
  
-  
 
 
 def logoutview(request):
