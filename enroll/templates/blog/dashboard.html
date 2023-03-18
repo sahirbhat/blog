@@ -1,0 +1,63 @@
+{% extends 'blog/base.html'%}
+{% load static %}
+
+
+{% block msg %}
+<div>   
+    {% if messages %}
+    {% for message in messages %}
+    <p {% if message.tags %} class="alert alert-{{message.tags}} m-3"> {% endif %} {{message}}</p>
+
+    {% endfor %}
+    {% endif  %}
+</div>
+
+{% endblock msg %}
+
+{%  block  content %}
+<div class="col-10">
+<h3 class=" text-white my-5">dashboard Page </h3>
+<td class="text-center alert-info"> <a href="{% url 'addpost' %}" class="btn btn-info btn-lg">AddPost</a></td>
+
+<h4 class="text-center-alert alert-info mt-3 p-2">ShOW POST INFO</h4>
+{% if post %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Title</th> 
+        <th scope="col">Desc</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for post in post %}
+      <tr>
+        
+        <td>{{post.id}}</td>
+        <td>{{post.title}}</td>
+        <td>{{post.decscription}}</td>
+        <td class="text-center"> <a href="{% url 'updatepost' post.id %}" class="btn btn-warning btn-sm">edit</a></td>
+        <form action="" method="post">
+        {% csrf_token %}
+        <td class="text-center"> <a href="{% url 'deletepost' post.id %}" class="btn btn-danger btn-sm d-inline">delete</a></td>
+        </form>
+   
+      </tr>
+  
+     {% endfor %}
+     
+    </tbody>
+  </table>
+{% else %}
+
+<h4 class="text-center-alert alert-info mt-3 p-2">No Post To Display</h4>
+
+
+{% endif %}
+    
+    
+
+
+
+{% endblock content %}

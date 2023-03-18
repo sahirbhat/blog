@@ -1,0 +1,32 @@
+{% extends 'blog/base.html'%}
+{% load static %}
+
+{%  block  content %}
+<div class="col-10">
+    <h3 class=" text-white my-5">signin Page </h3>
+    {% if messages %}
+    {% for message in messages %}
+      <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5"> {% endif %} {{message}}</p>
+
+    {% endfor %}
+
+
+  
+    {% endif  %}
+
+   <form action="" method="post" class="form-control-lg" novalidate>
+    {% csrf_token %}
+    {% for fm in fm %}
+    <div class="form-group">
+    {{fm.label_tag}}
+    {{fm}} 
+    {{fm.errors|striptags}}
+        <br>  
+    {% endfor %}
+    </div>
+    
+
+    <input type="submit" value="submit" class="btn-primary">
+   </form>
+
+{% endblock content %}

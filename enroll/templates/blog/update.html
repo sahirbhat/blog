@@ -1,0 +1,40 @@
+{% extends 'blog/base.html'%}
+{% load static %}
+
+{%  block  content %}
+<div class="col-10">
+    <h3 class=" text-white my-5">update Post </h3>
+
+    {% if messages %}
+    {% for message in messages %}
+      <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5"> {% endif %} {{message}}</p>
+
+    {% endfor %}
+
+
+  
+    {% endif  %}
+
+    <form action="" method="post" class="form-control-lg" novalidate>
+        {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group">
+        {{fm.label_tag}}
+        {{fm}} 
+        {{fm.errors|striptags}}
+            <br>  
+        {% endfor %}
+        </div>
+        {% if messages %}
+        {% for messages in messages %}
+        {{messages.label_tag}}
+        {{messages}}
+       
+    
+        {% endfor %}
+        {% endif  %}
+    
+     
+        </form>
+
+{% endblock content %}
