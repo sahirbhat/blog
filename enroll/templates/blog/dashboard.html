@@ -38,10 +38,12 @@
         <td>{{post.title}}</td>
         <td>{{post.decscription}}</td>
         <td class="text-center"> <a href="{% url 'updatepost' post.id %}" class="btn btn-warning btn-sm">edit</a></td>
+        {% if perms.blog.delete_post   %}
         <form action="" method="post">
         {% csrf_token %}
         <td class="text-center"> <a href="{% url 'deletepost' post.id %}" class="btn btn-danger btn-sm d-inline">delete</a></td>
         </form>
+        {% endif %}
    
       </tr>
   

@@ -4,6 +4,7 @@ from django.contrib.auth import login,logout,authenticate
 from . forms import UserSignInForm,PostForm
 from django.contrib import messages
 from . models import Post
+from django.contrib.auth.models import Group
 
 
 # Create your views here.
@@ -32,7 +33,9 @@ def signinview(request):
  if request.method=='POST':
   fm=UserSignInForm(request.POST)
   if fm.is_valid():
-   fm.save()
+   user=fm.save()
+   group=Group.objects.get(name='Author')
+   user.groups.add(group)
    messages.success(request,'Your Ac has been Created Successfully')
    
  fm=UserSignInForm()
