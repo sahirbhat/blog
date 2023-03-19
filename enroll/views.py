@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes,force_str
 from django.utils.http import urlsafe_base64_encode ,urlsafe_base64_decode  
 from django.template.loader import render_to_string  
-# from .token import account_activation_token  
+from .token import account_activation_token  
 from django.core.mail import EmailMessage  
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -45,16 +45,17 @@ def signinview(request):
     user = fm.save(commit=False)  
     user.is_active = False  
     user.save() 
+    # add user to group author
     group=Group.objects.get(name='Author')
     user.groups.add(group) 
-        # to get the domain of the current site  
+    # to get the domain of the current site  
     current_site = get_current_site(request)  
     mail_subject = 'Activation link has been sent to your email id'  
     message = render_to_string('blog/acc_active_email.html',{  
     'user': user,  
     'domain': current_site.domain,  
     'uid':urlsafe_base64_encode(force_bytes(user.pk)),  
-    'token':default_token_generator.make_token(user) 
+    'token':account_activation_token.make_token(user) 
     })  
     to_email = fm.cleaned_data.get('email')  
     email = EmailMessage( 
@@ -162,7 +163,7 @@ def deletepost(request, id):
 def activate(request, uidb64, token):  
     # User = get_user_model()  
     try:  
-        uid = str(urlsafe_base64_decode(uidb64))  
+        uid = force_str(urlsafe_base64_decode(uidb64))  
         user = User.objects.get(pk=uid)  
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):  
         user = None  
@@ -171,7 +172,7 @@ def activate(request, uidb64, token):
         user.save()  
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')  
     else:  
-        return HttpResponse('Activation link is invalid!')  
+        return HttpResponse('Activation link is.....y  invalid!')  
         
             
     
