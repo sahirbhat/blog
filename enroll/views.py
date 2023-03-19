@@ -7,7 +7,7 @@ from . models import Post
 from django.contrib.auth.models import Group
 from django.contrib.sites.shortcuts import get_current_site  
 from django.utils.encoding import force_bytes,force_str
-from django.utils.http import urlsafe_base64_encode   
+from django.utils.http import urlsafe_base64_encode ,urlsafe_base64_decode  
 from django.template.loader import render_to_string  
 # from .token import account_activation_token  
 from django.core.mail import EmailMessage  
@@ -63,7 +63,7 @@ def signinview(request):
     email.send()  
   
     messages.success(request,'Your Ac has been Created Successfully!!!!! Verify Ur ac first ')
-    return HttpResponseRedirect('login/')
+    HttpResponseRedirect('login/')
  else:  
      
   fm=UserSignInForm()
